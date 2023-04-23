@@ -1,0 +1,120 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(#fff, #eee);
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.app {
+  width: 600px;
+}
+
+.input {
+  color: #000;
+  font-size: 20px;
+  background-color: transparent;
+  padding: 14px;
+  border: 1px solid #000;
+}
+
+.input::placeholder {
+  color: #777;
+}
+
+.button {
+  color: #fff;
+  font-size: 20px;
+  background-color: #222731;
+  padding: 15px;
+  transition: all 0.1s;
+}
+
+.button:hover {
+  background-color: rgb(120, 120, 120);
+}
+
+.button.small {
+  font-size: 10px;
+  padding: 10px;
+}
+
+.button.regular {
+  font-size: 20px;
+}
+
+.button.big {
+  font-size: 35px;
+  padding: 35px;
+}
+
+.button.make {
+  background-color: rgb(9, 151, 9);
+}
+
+.button.make:hover {
+  background-color: rgb(39, 210, 39);
+}
+
+.button.remove {
+  background-color: rgb(175, 38, 38);
+}
+
+.button.remove:hover {
+  background-color: rgb(239, 68, 68);
+}
+
+.button.edit {
+  background-color: rgb(11, 90, 180);
+}
+
+.button.edit:hover {
+  background-color: rgb(39, 137, 228);
+}
+
+.task-maker {
+  text-align: center;
+  background-color: #ddd;
+  padding: 20px;
+  padding-top: 50px;
+}
+
+.task-manager {
+  background-color: #ddd;
+  padding: 20px;
+  padding-left: 35px;
+}
+
+.task {
+  margin: 20px 0;
+}
+
+.task * {
+  margin: 3px 0;
+}
+
+.task-content {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.task-content.done {
+  font-style: italic;
+  text-decoration: line-through;
+  color: #f00;
+}
+
+.header {
+  background-color: #ddd;
+  padding: 20px;
+  text-align: center;
+}
