@@ -4,6 +4,16 @@
   border: 0;
   outline: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 0.08em solid #222731;
+  border-radius: 0.2em;
 }
 
 body {
@@ -11,8 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   background: radial-gradient(#fff, #eee);
-  height: 100vh;
-  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
 }
 
 .app {
@@ -20,11 +29,11 @@ body {
 }
 
 .input {
-  color: #000;
+  color: #222731;
   font-size: 20px;
   background-color: transparent;
   padding: 14px;
-  border: 1px solid #000;
+  border: 0.06em solid #222731;
 }
 
 .input::placeholder {
@@ -36,16 +45,32 @@ body {
   font-size: 20px;
   background-color: #222731;
   padding: 15px;
-  transition: all 0.1s;
+  transition: all 0.2s;
 }
 
 .button:hover {
-  background-color: rgb(120, 120, 120);
+  background-color: #323741;
+}
+
+.check-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.edit-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.remove-icon {
+  width: 28px;
+  height: 28px;
 }
 
 .button.small {
   font-size: 10px;
-  padding: 10px;
+  background-color: transparent;
+  padding: 0 5px;
 }
 
 .button.regular {
@@ -58,27 +83,27 @@ body {
 }
 
 .button.make {
-  background-color: rgb(9, 151, 9);
+  color: #20c004;
 }
 
 .button.make:hover {
-  background-color: rgb(39, 210, 39);
+  transform: scale(1.1) rotate(8deg);
 }
 
 .button.remove {
-  background-color: rgb(175, 38, 38);
+  color: #de2e0b;
 }
 
 .button.remove:hover {
-  background-color: rgb(239, 68, 68);
+  transform: scale(1.1) rotate(8deg);
 }
 
 .button.edit {
-  background-color: rgb(11, 90, 180);
+  color: #09f;
 }
 
 .button.edit:hover {
-  background-color: rgb(39, 137, 228);
+  transform: scale(1.1) rotate(8deg);
 }
 
 .task-maker {
@@ -89,13 +114,29 @@ body {
 }
 
 .task-manager {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   background-color: #ddd;
   padding: 20px;
-  padding-left: 35px;
+  border-bottom-right-radius: 0.3em;
+  border-bottom-left-radius: 0.3em;
+  max-height: 450px;
+  overflow-y: auto;
 }
 
 .task {
-  margin: 20px 0;
+  min-width: 80%;
+  margin: 10px 0;
+  background-color: #22273120;
+  padding: 12px;
+  border-radius: 0.2em;
+}
+
+.task.invisible {
+  animation-name: pop;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier();
 }
 
 .task * {
@@ -110,11 +151,36 @@ body {
 .task-content.done {
   font-style: italic;
   text-decoration: line-through;
-  color: #f00;
+  color: #de2e0b;
 }
 
 .header {
   background-color: #ddd;
   padding: 20px;
   text-align: center;
+  border-top-right-radius: 0.3em;
+  border-top-left-radius: 0.3em;
+}
+
+.header * {
+  color: #222831;
+}
+
+.header-taskcounter b {
+  transition: all 0.2s;
+}
+
+.header-taskcounter.glow b {
+  color: #09f;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.8) rotate(-3deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }

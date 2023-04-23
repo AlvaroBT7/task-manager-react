@@ -1,21 +1,36 @@
 import { useState, useEffect } from "react";
+import {
+  BsFillPencilFill,
+  BsFillCheckCircleFill,
+  BsFillDashCircleFill,
+} from "react-icons/bs";
 import "./App.css";
 
-const useCardTransition = (timeToShow) => {
-  const [invisible, setInvisible] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setInvisible(false);
-    }, timeToShow);
-  }, [invisible]);
+const useCardTransition = (timeToShow = 500, enabled = true) => {
+  const [invisible, setInvisible] = useState(enabled);
+  setTimeout(() => {
+    setInvisible(!enabled);
+  }, timeToShow);
   return invisible;
 };
 
-const Header = ({ numberOfTasks = 0 }) => {
+const Header = ({ updateTasks }) => {
+  const [hasGlow, setHasGlow] = useState(false);
+  const [tasks] = updateTasks;
+
+  useEffect(() => {
+    setHasGlow(true);
+    setTimeout(() => {
+      setHasGlow(false);
+    }, 500);
+  }, [tasks]);
+
   return (
     <div className="header">
       <h1 className="header-title">Task Manager</h1>
-      <p className="header-taskcounter">Current tasks: {numberOfTasks}</p>
+      <p className={`header-taskcounter ${hasGlow ? "glow" : ""}`.trim()}>
+        Current tasks: <b>{tasks.length}</b>{" "}
+      </p>
     </div>
   );
 };
@@ -34,7 +49,7 @@ const Button = ({
   children,
   action = () => console.warn("no action"),
   size = "regular",
-  type = "remove",
+  type,
 }) => (
   <button
     className={`button ${
@@ -70,9 +85,7 @@ const TaskMaker = ({ updateTasks }) => {
         value={inputContent}
         placeholder="Task name"
       />
-      <Button action={handleButtonClick} type="make">
-        Add new task
-      </Button>
+      <Button action={handleButtonClick}>Add new task</Button>
     </div>
   );
 };
@@ -116,7 +129,7 @@ const Task = ({
   const [editMode, setEditMode] = useState(taskEditMode);
   const [done, setDone] = useState(taskDone);
   // custom hooks for the task baby
-  const invisible = useCardTransition(500);
+  const invisible = useCardTransition(500, true);
 
   useEffect(() => {
     if (tasks) {
@@ -159,16 +172,16 @@ const Task = ({
         <div className="task-button-container">
           {editMode ? null : (
             <Button type="make" size="small" action={handleDoneButton}>
-              {done ? `Unmark as done` : `Mark as done`}
+              <BsFillCheckCircleFill className="check-icon" />
             </Button>
           )}
           {done ? null : (
             <Button type="edit" size="small" action={handleEditButton}>
-              {editMode ? `Save` : `Edit`}
+              <BsFillPencilFill className="edit-icon" />
             </Button>
           )}
-          <Button size="small" action={handleRemoveButton}>
-            Remove task
+          <Button size="small" type="remove" action={handleRemoveButton}>
+            <BsFillDashCircleFill className="remove-icon" />
           </Button>
         </div>
       ) : null}
@@ -188,10 +201,9 @@ const App = () => {
       console.error(error);
     }
   }, [tasks]);
-
   return (
     <div className="app">
-      <Header numberOfTasks={tasks.length} />
+      <Header updateTasks={[tasks, setTasks]} />
       <TaskMaker updateTasks={[tasks, setTasks]} />
       <TaskManager updateTasks={[tasks, setTasks]} />
     </div>
