@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import {
   BsFillPencilFill,
   BsFillCheckCircleFill,
@@ -14,9 +14,9 @@ const useCardTransition = (timeToShow = 500, enabled = true) => {
   return invisible;
 };
 
-const Header = ({ updateTasks }) => {
+const Header = () => {
+  const [tasks, _] = useContext(TaskContext);
   const [hasGlow, setHasGlow] = useState(false);
-  const [tasks] = updateTasks;
 
   useEffect(() => {
     setHasGlow(true);
@@ -62,7 +62,7 @@ const Button = ({
 );
 
 const TaskMaker = ({ updateTasks }) => {
-  const [tasks, setTasks] = updateTasks;
+  const [tasks, setTasks] = useContext(TaskContext);
   const [inputContent, setInputContent] = useState("");
 
   const handleButtonClick = () => {
@@ -91,7 +91,7 @@ const TaskMaker = ({ updateTasks }) => {
 };
 
 const TaskManager = ({ updateTasks }) => {
-  const [tasks, _] = updateTasks;
+  const [tasks, _] = useContext(TaskContext);
   if (tasks.length === 0) {
     return (
       <div className="task-manager">
@@ -124,7 +124,7 @@ const Task = ({
   hasRemoveButton = true,
   updateTasks = [],
 }) => {
-  const [tasks, setTasks] = updateTasks;
+  const [tasks, setTasks] = useContext(TaskContext);
   const [content, setContent] = useState(taskContent);
   const [editMode, setEditMode] = useState(taskEditMode);
   const [done, setDone] = useState(taskDone);
@@ -132,9 +132,9 @@ const Task = ({
   const invisible = useCardTransition(500, true);
 
   useEffect(() => {
-    if (tasks) {
+    if (tasks.length) {
       const newTasks = [...tasks];
-      let currentTask = tasks.findIndex((task) => task.id === id);
+      const currentTask = tasks.findIndex((task) => task.id === id);
       newTasks[currentTask].content = content;
       newTasks[currentTask].editMode = editMode;
       newTasks[currentTask].done = done;
@@ -189,7 +189,9 @@ const Task = ({
   );
 };
 
-const App = () => {
+const TaskContext = createContext();
+
+const TaskContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState(
     JSON.parse(window.localStorage.getItem("tasks")) || []
   );
@@ -201,11 +203,22 @@ const App = () => {
       console.error(error);
     }
   }, [tasks]);
+
+  return (
+    <TaskContext.Provider value={[tasks, setTasks]}>
+      {children}
+    </TaskContext.Provider>
+  );
+};
+
+const App = () => {
   return (
     <div className="app">
-      <Header updateTasks={[tasks, setTasks]} />
-      <TaskMaker updateTasks={[tasks, setTasks]} />
-      <TaskManager updateTasks={[tasks, setTasks]} />
+      <TaskContextProvider>
+        <Header />
+        <TaskMaker />
+        <TaskManager />
+      </TaskContextProvider>
     </div>
   );
 };
